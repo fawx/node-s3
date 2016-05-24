@@ -138,9 +138,17 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
     var files = [];
     var errors = [];
 
-    console.log( req.body );
-    console.log( req.file );
+    var url = req.body['file-url'];
+    var file = req.file;
 
+    console.log( url, files );
+
+    if ( url ) {
+        console.log( url );
+    }
+    else if ( file ) {
+        console.log( file );
+    }
     /*
     var images = [ 
         { 
