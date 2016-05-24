@@ -7,7 +7,8 @@ var fs = require('fs');
 var hash = require('object-hash');
 var lwip = require('lwip');
 var conf = require('../config/config');
-
+var multer = require('multer');
+var upload = multer({ dest: 'tmp/' });
 
 var s3client = s3.createClient({
     s3Options: {
@@ -132,11 +133,15 @@ router.get('/upload', function(req, res, next) {
     res.render('upload', { title: 'S3 Uploader' });
 });
 
-router.post('/upload', function(req, res, next) {
+router.post('/upload', upload.single('file'), function(req, res, next) {
     var size = 0;
     var files = [];
     var errors = [];
 
+    console.log( req.body );
+    console.log( req.file );
+
+    /*
     var images = [ 
         { 
             "data": "Do you wake up ready to make the world a little better every morning? Come join our digital studio to help bring our clients' ideas to life and shape the future of fundraising through our flagship product, Cause Momentum.\n\n",
@@ -200,6 +205,8 @@ router.post('/upload', function(req, res, next) {
         console.log( err );
         res.send(500);
     }
+    */
+   res.sendStatus(200);
 });
 
 module.exports = router;

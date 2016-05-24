@@ -22,11 +22,36 @@ function handleDrop(e) {
     e.stopPropagation();
     e.preventDefault();
 
-    var files = e.dataTransfer.files;
+    dropTarget.classList.remove('droppable');
 
-    for ( var i = 0; i < files.length; i++ ) {
-        console.log( files[i] );
+    var files = e.dataTransfer.files;
+    var url = e.dataTransfer.getData('text/uri-list');
+    var formdata = new FormData();
+
+    console.log( files, url );
+
+    if ( files.length > 0 ) {
+        formdata.append('file', files[0]);
     }
+    else if ( url.length > 0 ) {
+        formdata.append('file-url', url);
+    }
+
+    console.log( formdata );
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/upload');
+
+    xhr.onload = function() {
+        if ( xhr.status === 200 ) {
+            console.log('success');
+        }
+        else {
+            console.log('error');
+        }
+    };
+
+    xhr.send(formdata);
 
     return false;
 };
